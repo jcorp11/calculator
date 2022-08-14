@@ -12,25 +12,32 @@ body{
     width: 400px;
 }
 .screen{
-    border: 3px solid black;
+    border: 2px solid black;
     border-radius: 12px;
-    text-align: end;
-    padding-right: 1em;
-    font-size: 35px;
+    /* text-align: end; */
+    padding-right: 0.2em;
+    font-size: 24px;
     background-color: aliceblue;
     height: 40px;
+    grid-column: 1 / -1;
+    width: 65%;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: end;
+    
 }
 .buttons{
-    margin-top: 40px;
+    margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(4, 2fr);
     grid-template-rows: auto;
     width: 70%;
     margin-left:auto;
-    margin-right: auto;
-    
+    margin-right: auto;    
 
 }
+
 button{
     border-radius: 0px;
     /* border-style: solid; */

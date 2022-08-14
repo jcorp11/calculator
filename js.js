@@ -1,7 +1,9 @@
 const add= (a,b) => a+b ;
 const substract = (a,b)=> add(a, -b) ;
 const multiply = (a,b)=> a*b;
-const divide = (a,b) =>a/b;
+const divide = (a,b) =>{
+    return b==0 ? 'Mistakes were made' : a/b;
+};
 const operate = (operator, a, b) => operator(a,b);
 
 const operands = {
@@ -20,7 +22,7 @@ function initialize(){
         btn.setAttribute('type', 'button')
         btn.id = 'btn-'+i;
         container.append(btn);
-
+        
     };
 };
 
@@ -42,7 +44,7 @@ let state = true;
 function numberEvents(){
     AC.addEventListener('click', () => {
         screen.innerText='';
-        [a , b] = [0 , 0];
+        [a , b, operand] = [undefined , undefined, undefined];
     });
     buttons.forEach(btn=>{
         //console.log(btn.id.slice(-1));
@@ -51,9 +53,9 @@ function numberEvents(){
             btn.addEventListener('click',(e)=>{
                 state = true;
                 if  (write){
-                    screen.innerText+= e.target.innerText;
+                    screen.innerText+= updateDisplay(e.target.innerText);
                 }else {
-                    screen.innerText = e.target.innerText;
+                    screen.innerText = updateDisplay(e.target.innerText);
                     write = true;
                 }
                 if(!operand){
@@ -67,19 +69,17 @@ numberEvents();
 
 buttons.forEach(btn=>{
 
-    if( '+-/*'.includes(btn.id.slice(-1))){
-        btn.addEventListener('click',(e)=>{
-  
+    if('+-/*'.includes(btn.id.slice(-1))){
+        btn.addEventListener('click',(e)=>{  
             if(!a){
                 operand = operands[e.target.innerText];
                 a = parseFloat(screen.innerText);
-                //screen.innerText = '';
                 write = false;
             }else{
                 if(state && operand){
                     b = parseFloat(screen.innerText);
                     let result = operate(operand, a, b);
-                    screen.innerText = result;
+                    screen.innerText = updateDisplay(result);
                     operand = operands[e.target.innerText];
                     a = result;
                     b= 0;
@@ -87,10 +87,8 @@ buttons.forEach(btn=>{
                     state = false;
                 }else{
                     operand = operands[e.target.innerText];
-                    write = false;
-                    
-                }
-                
+                    write = false;                    
+                }                
             }        
         });
     };
@@ -100,7 +98,7 @@ equalBtn.addEventListener('click', (e)=>{
     if(a && operand){
         b = parseFloat(screen.innerText);
         let result = operate(operand, a, b);
-        screen.innerText = result;
+        screen.innerText = updateDisplay(result);
         a = result;
         b = undefined;
         operand = undefined;
@@ -109,6 +107,11 @@ equalBtn.addEventListener('click', (e)=>{
     }
 });
 
-
-
-
+const updateDisplay = (result) =>{
+    if(result.toString().includes('.')){
+        const index = result.toString().indexOf('.');
+        return result.toString().slice(0, index + 8);
+    }else{
+        return result;
+    }
+}
